@@ -26,7 +26,7 @@ const updateFavorite = ( index, isFavorite ) => {
 }
 
 const resetSelected = () => {
-        return {
+    return {
         type: 'RESET_SELECT',
     }
 }
