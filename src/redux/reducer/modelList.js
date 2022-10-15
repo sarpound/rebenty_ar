@@ -54,7 +54,7 @@ const loadModel = async () => {
     }
 }
 
-const updateModel = async (type, index, isFavorite) => {
+const updateModel = async (type, index, isTrueOrFalse) => {
     try {
         let isUpdated = false;
 
@@ -63,8 +63,11 @@ const updateModel = async (type, index, isFavorite) => {
             initialState[index]
         ) {
             if (type === 'UPDATE_FAVORITE') {
-                initialState[index].isFavorite = isFavorite;
+                initialState[index].isFavorite = isTrueOrFalse;
                 initialState.forEach(item => item.isSelected = false);
+                isUpdated = true;
+            } else if (type === 'UPDATE_SELECT') {
+                initialState[index].isSelected = isTrueOrFalse;
                 isUpdated = true;
             }
 
@@ -85,6 +88,11 @@ const updateModel = async (type, index, isFavorite) => {
     }
 }
 
+const resetSelected = () => {
+    initialState.forEach(item => item.isSelected = false);
+    return { status: 'OK', data: initialState};
+}
+
 export default function (state = initialState, action) {
     switch (action.type) {
         case 'ADD_MODEL':
@@ -93,6 +101,10 @@ export default function (state = initialState, action) {
             return 0;
         case 'UPDATE_FAVORITE':
             return updateModel('UPDATE_FAVORITE', action.payload.index, action.payload.isFavorite);
+        case 'UPDATE_SELECT':
+            return updateModel('UPDATE_SELECT', action.payload.index, action.payload.isSelected);
+        case 'RESET_SELECT':
+            return resetSelected();
         default:
             return loadModel();
     }

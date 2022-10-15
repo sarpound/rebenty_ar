@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { updateFavorite } from '../../redux/actions';
+import { updateFavorite, updateSelect, resetSelected } from '../../redux/actions';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -31,7 +31,6 @@ const ModelList = ({ data }) => {
   const [model, setModel] = React.useState([]);
   const [selectedId, setSelectedId] = React.useState([]);
   const [isSelectDisplay, setIsSelectDisplay] = React.useState(false);
-  const [scrollFlatListY, setScrollFlatListY] = React.useState(0);
 
   const dispatch = useDispatch();
 
@@ -86,7 +85,7 @@ const ModelList = ({ data }) => {
   const onFavoriteClick = index => {
     if (isSelectDisplay) {
       setIsSelectDisplay(false);
-      resetSelected();
+      resetModelSelected();
     }
 
     let updateModel = model;
@@ -106,20 +105,25 @@ const ModelList = ({ data }) => {
       const isSelected = updateModel[index].isSelected ? false : true;
       updateModel[index].isSelected = isSelected;
       setModel([...updateModel]);
+
+       dispatch(updateSelect(index, isSelected));
     }
   };
 
-  const resetSelected = () => {
+  const resetModelSelected = () => {
     let updateModel = model;
     if (updateModel.length > 0) {
       updateModel.forEach(item => (item.isSelected = false));
     }
+
     setModel([...updateModel]);
+    dispatch(resetSelected());
   };
 
   const onPressClick = index => {
     if (isSelectDisplay) {
       onSelectedClick(index);
+
       return;
     }
   };
@@ -127,7 +131,8 @@ const ModelList = ({ data }) => {
   const onLongPressClick = index => {
     if (isSelectDisplay) {
       setIsSelectDisplay(false);
-      resetSelected();
+      resetModelSelected();
+
       return;
     }
 
@@ -163,33 +168,31 @@ const ModelList = ({ data }) => {
             ) : (
               <View></View>
             )}
-
-            <FeatherIcon name="more-horizontal" size={ITEM_WIDTH === 150 ? 20 : 14} color={'#000000'} />
           </View>
-          <View style={styles.items.wrap.content}>
-            <View style={styles.items.logo}>
+          <View style={ styles.items.wrap.content }>
+            <View style={ styles.items.logo }>
               <Image
-                style={styles.items.img}
+                style={ styles.items.img }
                 resizeMode="contain"
-                source={item.objUri}
+                source={ item.objUri }
               />
             </View>
           </View>
-          <View style={styles.items.wrap.details}>
-            <View style={styles.items.wrap.details.header}>
-              <View style={styles.items.name}>
-                <Text style={styles.items.name.text}>{item.name}</Text>
+          <View style={ styles.items.wrap.details }>
+            <View style={ styles.items.wrap.details.header }>
+              <View style={ styles.items.name }>
+                <Text style={ styles.items.name.text }>{ item.name }</Text>
               </View>
-              <View style={styles.items.size}>
-                <Text style={styles.items.size.text}>{item.size}</Text>
+              <View style={ styles.items.size }>
+                <Text style={ styles.items.size.text }>{ item.size }</Text>
               </View>
             </View>
-            <View style={styles.items.wrap.details.favorite}>
+            <View style={ styles.items.wrap.details.favorite }>
               <TouchableOpacity onPress={() => onFavoriteClick(index)}>
                 <AntDesign
                   name="heart"
-                  size={ITEM_WIDTH === 150 ? 18 : 14}
-                  color={item.isFavorite ? '#ff0000' : '#e8e8e8'}
+                  size={ ITEM_WIDTH === 150 ? 18 : 14 }
+                  color={ item.isFavorite ? '#ff0000' : '#e8e8e8' }
                 />
               </TouchableOpacity>
             </View>
