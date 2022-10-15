@@ -5,11 +5,12 @@ const addModel = ( model ) => {
     }
 }
 
-const addRouteName = ( routeName ) => {
+const updateSelect = ( index, isSelected ) => {
     return {
-        type: 'ADD_ROUTE_NAME',
+        type: 'UPDATE_SELECT',
         payload: {
-            routeName: routeName
+            index: index,
+            isSelected: isSelected
         }
     }
 }
@@ -24,11 +25,12 @@ const updateFavorite = ( index, isFavorite ) => {
     }
 }
 
-const getRouteName = () => {
-    return {
-        type: 'GET_ROUTE_NAME'
+const resetSelected = () => {
+        return {
+        type: 'RESET_SELECT',
     }
 }
 
-export {addModel, updateFavorite, addRouteName, getRouteName};
+
+export { addModel, updateFavorite, updateSelect, resetSelected };
 

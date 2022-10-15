@@ -3,7 +3,6 @@ import { createNavigationContainerRef, NavigationContainer } from '@react-naviga
 import BottomTab from './Navigators/BottomTab';
 
 import { useDispatch } from 'react-redux';
-import { addRouteName } from '../redux/actions';
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -15,13 +14,11 @@ export default function Route() {
             onReady={() => {
                 const routeName = navigationRef.getCurrentRoute().name;
                 setRouteName(routeName);
-                dispatch(addRouteName(routeName));
             }}
             onStateChange={async () => {
                 const previousRouteName = routeName;
                 const currentRouteName = navigationRef.getCurrentRoute().name;
                 console.log("route", currentRouteName);
-                dispatch(addRouteName(currentRouteName));
                 setRouteName(currentRouteName);
         }}>
             <BottomTab/>

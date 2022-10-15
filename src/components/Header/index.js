@@ -11,7 +11,7 @@ export default function Header( { routeName } ) {
 
   return (
     <View style={[styles.container, appStyles.bluePearl]}>
-      <Text style={ styles.container.header }>Rebenty.</Text>
+      <Text style={ styles.container.header }>Rebenty AR.</Text>
       <Text style={ styles.container.text }>{ getRouteName }</Text>
     </View>
   )
